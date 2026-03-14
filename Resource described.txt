@@ -1,0 +1,273 @@
+laborant@dev-machine:~$ kubectl describe pod frontend-88dcd974c-nc44r
+Name:             frontend-88dcd974c-nc44r
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             node-01/172.16.0.3
+Start Time:       Sat, 14 Mar 2026 04:50:03 +0000
+Labels:           app=guestbook
+                  pod-template-hash=88dcd974c
+                  tier=frontend
+Annotations:      <none>
+Status:           Running
+IP:               10.42.1.6
+IPs:
+  IP:           10.42.1.6
+Controlled By:  ReplicaSet/frontend-88dcd974c
+Containers:
+  php-redis:
+    Container ID:   containerd://33829ae2f68bf1f21857ec1669a2dd7342c0021aaeec05beb39b93e370f3aba2
+    Image:          us-docker.pkg.dev/google-samples/containers/gke/gb-frontend:v5
+    Image ID:       us-docker.pkg.dev/google-samples/containers/gke/gb-frontend@sha256:a908df8486ff66f2c4daa0d3d8a2fa09846a1fc8efd65649c0109695c7c5cbff
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sat, 14 Mar 2026 04:50:56 +0000
+    Ready:          True
+    Restart Count:  0
+    Requests:
+      cpu:     100m
+      memory:  100Mi
+    Environment:
+      GET_HOSTS_FROM:  dns
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hdqlh (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-hdqlh:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  22m   default-scheduler  Successfully assigned default/frontend-88dcd974c-nc44r to node-01
+  Normal  Pulling    22m   kubelet            spec.containers{php-redis}: Pulling image "us-docker.pkg.dev/google-samples/containers/gke/gb-frontend:v5"
+  Normal  Pulled     22m   kubelet            spec.containers{php-redis}: Successfully pulled image "us-docker.pkg.dev/google-samples/containers/gke/gb-frontend:v5" in 53.184s (53.184s including waiting). Image size: 341206372 bytes.
+  Normal  Created    22m   kubelet            spec.containers{php-redis}: Container created
+  Normal  Started    22m   kubelet            spec.containers{php-redis}: Container started
+
+  =========================================================================================================
+
+  laborant@dev-machine:~$ kubectl describe svc frontend
+Name:                     frontend
+Namespace:                default
+Labels:                   app=guestbook
+                          tier=frontend
+Annotations:              <none>
+Selector:                 app=guestbook,tier=frontend
+Type:                     ClusterIP
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.43.88.125
+IPs:                      10.43.88.125
+Port:                     <unset>  80/TCP
+TargetPort:               80/TCP
+Endpoints:                10.42.1.6:80
+Session Affinity:         None
+Internal Traffic Policy:  Cluster
+Events:
+  Type    Reason                Age   From                   Message
+  ----    ------                ----  ----                   -------
+  Normal  EnsuringLoadBalancer  18m   service-controller     Ensuring load balancer
+  Normal  AppliedDaemonSet      18m   service-lb-controller  Applied LoadBalancer DaemonSet kube-system/svclb-frontend-3cd1946a
+  Normal  DeletingLoadBalancer  17m   service-controller     Deleting load balancer
+  Normal  DeletedDaemonSet      17m   service-lb-controller  Deleted LoadBalancer DaemonSet kube-system/svclb-frontend-3cd1946a
+  Normal  DeletedLoadBalancer   17m   service-controller     Deleted load balancer
+
+
+  ================================================================================================================
+
+  laborant@dev-machine:~$ kubectl describe node node-01
+Name:               node-01
+Roles:              <none>
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/instance-type=k3s
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=node-01
+                    kubernetes.io/os=linux
+                    node.kubernetes.io/instance-type=k3s
+Annotations:        alpha.kubernetes.io/provided-node-ip: 172.16.0.3
+                    flannel.alpha.coreos.com/backend-data: {"VNI":1,"VtepMAC":"c2:c9:b5:c0:0e:7a"}
+                    flannel.alpha.coreos.com/backend-type: vxlan
+                    flannel.alpha.coreos.com/kube-subnet-manager: true
+                    flannel.alpha.coreos.com/public-ip: 172.16.0.3
+                    k3s.io/hostname: node-01
+                    k3s.io/internal-ip: 172.16.0.3
+                    k3s.io/node-args: ["agent"]
+                    k3s.io/node-config-hash: FGNRSI4GLNRCSRPUQCKV6DLPROPMIWNDUTCT4UR3H2P6DEWAZ46Q====
+                    k3s.io/node-env: {"K3S_KUBECTL_VERSION":"1.35.0","K3S_TOKEN":"********","K3S_URL":"https://172.16.0.2:6443","K3S_VERSION":"1.35.0+k3s3"}
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Sat, 14 Mar 2026 04:45:48 +0000
+Taints:             <none>
+Unschedulable:      false
+Lease:
+  HolderIdentity:  node-01
+  AcquireTime:     <unset>
+  RenewTime:       Sat, 14 Mar 2026 05:17:02 +0000
+Conditions:
+  Type             Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----             ------  -----------------                 ------------------                ------                       -------
+  MemoryPressure   False   Sat, 14 Mar 2026 05:12:31 +0000   Sat, 14 Mar 2026 04:45:48 +0000   KubeletHasSufficientMemory   kubelet has sufficient memory available
+  DiskPressure     False   Sat, 14 Mar 2026 05:12:31 +0000   Sat, 14 Mar 2026 04:45:48 +0000   KubeletHasNoDiskPressure     kubelet has no disk pressure
+  PIDPressure      False   Sat, 14 Mar 2026 05:12:31 +0000   Sat, 14 Mar 2026 04:45:48 +0000   KubeletHasSufficientPID      kubelet has sufficient PID available
+  Ready            True    Sat, 14 Mar 2026 05:12:31 +0000   Sat, 14 Mar 2026 04:45:48 +0000   KubeletReady                 kubelet is posting ready status
+Addresses:
+  InternalIP:  172.16.0.3
+  Hostname:    node-01
+Capacity:
+  cpu:                1
+  ephemeral-storage:  30886072Ki
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             2029696Ki
+  pods:               110
+Allocatable:
+  cpu:                1
+  ephemeral-storage:  30045970819
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             2029696Ki
+  pods:               110
+System Info:
+  Machine ID:                 44ba9ab5d58c4328886fb92206f873ce
+  System UUID:                44ba9ab5d58c4328886fb92206f873ce
+  Boot ID:                    08625d00-1b86-4ce1-ac47-d2aacd5f05c1
+  Kernel Version:             6.1.160
+  OS Image:                   Ubuntu 24.04.4 LTS
+  Operating System:           linux
+  Architecture:               amd64
+  Container Runtime Version:  containerd://2.1.5-k3s1
+  Kubelet Version:            v1.35.0+k3s3
+  Kube-Proxy Version:         
+PodCIDR:                      10.42.1.0/24
+PodCIDRs:                     10.42.1.0/24
+ProviderID:                   k3s://node-01
+Non-terminated Pods:          (4 in total)
+  Namespace                   Name                               CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+  ---------                   ----                               ------------  ----------  ---------------  -------------  ---
+  default                     frontend-88dcd974c-nc44r           100m (10%)    0 (0%)      100Mi (5%)       0 (0%)         27m
+  default                     redis-follower-6958c9f49c-6jvmc    100m (10%)    0 (0%)      100Mi (5%)       0 (0%)         27m
+  kube-system                 coredns-6b4688786f-js7d2           100m (10%)    0 (0%)      70Mi (3%)        170Mi (8%)     31m
+  kube-system                 svclb-traefik-f6c3940d-gd82d       0 (0%)        0 (0%)      0 (0%)           0 (0%)         31m
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests     Limits
+  --------           --------     ------
+  cpu                300m (30%)   0 (0%)
+  memory             270Mi (13%)  170Mi (8%)
+  ephemeral-storage  0 (0%)       0 (0%)
+  hugepages-1Gi      0 (0%)       0 (0%)
+  hugepages-2Mi      0 (0%)       0 (0%)
+Events:
+  Type    Reason                   Age   From                   Message
+  ----    ------                   ----  ----                   -------
+  Normal  CertificateExpirationOK  31m   k3s-cert-monitor       Node and Certificate Authority certificates managed by k3s are OK
+  Normal  Synced                   31m   cloud-node-controller  Node synced successfully
+  Normal  RegisteredNode           31m   node-controller        Node node-01 event: Registered Node node-01 in Controller
+
+  ===============================================================================================================================================
+
+  laborant@dev-machine:~$ kubectl describe node node-02
+Name:               node-02
+Roles:              <none>
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/instance-type=k3s
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=node-02
+                    kubernetes.io/os=linux
+                    node.kubernetes.io/instance-type=k3s
+Annotations:        alpha.kubernetes.io/provided-node-ip: 172.16.0.4
+                    flannel.alpha.coreos.com/backend-data: {"VNI":1,"VtepMAC":"ea:ab:7b:2a:e7:31"}
+                    flannel.alpha.coreos.com/backend-type: vxlan
+                    flannel.alpha.coreos.com/kube-subnet-manager: true
+                    flannel.alpha.coreos.com/public-ip: 172.16.0.4
+                    k3s.io/hostname: node-02
+                    k3s.io/internal-ip: 172.16.0.4
+                    k3s.io/node-args: ["agent"]
+                    k3s.io/node-config-hash: FGNRSI4GLNRCSRPUQCKV6DLPROPMIWNDUTCT4UR3H2P6DEWAZ46Q====
+                    k3s.io/node-env: {"K3S_KUBECTL_VERSION":"1.35.0","K3S_TOKEN":"********","K3S_URL":"https://172.16.0.2:6443","K3S_VERSION":"1.35.0+k3s3"}
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Sat, 14 Mar 2026 04:45:52 +0000
+Taints:             <none>
+Unschedulable:      false
+Lease:
+  HolderIdentity:  node-02
+  AcquireTime:     <unset>
+  RenewTime:       Sat, 14 Mar 2026 05:18:32 +0000
+Conditions:
+  Type             Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----             ------  -----------------                 ------------------                ------                       -------
+  MemoryPressure   False   Sat, 14 Mar 2026 05:15:58 +0000   Sat, 14 Mar 2026 04:45:52 +0000   KubeletHasSufficientMemory   kubelet has sufficient memory available
+  DiskPressure     False   Sat, 14 Mar 2026 05:15:58 +0000   Sat, 14 Mar 2026 04:45:52 +0000   KubeletHasNoDiskPressure     kubelet has no disk pressure
+  PIDPressure      False   Sat, 14 Mar 2026 05:15:58 +0000   Sat, 14 Mar 2026 04:45:52 +0000   KubeletHasSufficientPID      kubelet has sufficient PID available
+  Ready            True    Sat, 14 Mar 2026 05:15:58 +0000   Sat, 14 Mar 2026 04:45:52 +0000   KubeletReady                 kubelet is posting ready status
+Addresses:
+  InternalIP:  172.16.0.4
+  Hostname:    node-02
+Capacity:
+  cpu:                1
+  ephemeral-storage:  30886072Ki
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             2029696Ki
+  pods:               110
+Allocatable:
+  cpu:                1
+  ephemeral-storage:  30045970819
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             2029696Ki
+  pods:               110
+System Info:
+  Machine ID:                 9a54cc676bef4885a2d46bc64fb443b1
+  System UUID:                9a54cc676bef4885a2d46bc64fb443b1
+  Boot ID:                    3067475d-c1b2-47d7-96b9-9ea77296596b
+  Kernel Version:             6.1.160
+  OS Image:                   Ubuntu 24.04.4 LTS
+  Operating System:           linux
+  Architecture:               amd64
+  Container Runtime Version:  containerd://2.1.5-k3s1
+  Kubelet Version:            v1.35.0+k3s3
+  Kube-Proxy Version:         
+PodCIDR:                      10.42.2.0/24
+PodCIDRs:                     10.42.2.0/24
+ProviderID:                   k3s://node-02
+Non-terminated Pods:          (2 in total)
+  Namespace                   Name                            CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+  ---------                   ----                            ------------  ----------  ---------------  -------------  ---
+  kube-system                 svclb-traefik-f6c3940d-hrw56    0 (0%)        0 (0%)      0 (0%)           0 (0%)         32m
+  kube-system                 traefik-5fdc878c8d-77rqg        0 (0%)        0 (0%)      0 (0%)           0 (0%)         32m
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests  Limits
+  --------           --------  ------
+  cpu                0 (0%)    0 (0%)
+  memory             0 (0%)    0 (0%)
+  ephemeral-storage  0 (0%)    0 (0%)
+  hugepages-1Gi      0 (0%)    0 (0%)
+  hugepages-2Mi      0 (0%)    0 (0%)
+Events:
+  Type    Reason                   Age   From                   Message
+  ----    ------                   ----  ----                   -------
+  Normal  CertificateExpirationOK  32m   k3s-cert-monitor       Node and Certificate Authority certificates managed by k3s are OK
+  Normal  Synced                   32m   cloud-node-controller  Node synced successfully
+  Normal  RegisteredNode           32m   node-controller        Node node-02 event: Registered Node node-02 in Controller
+
+  =============================================================================================================================================
